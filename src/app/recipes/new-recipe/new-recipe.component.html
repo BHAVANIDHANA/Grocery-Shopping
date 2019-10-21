@@ -1,0 +1,139 @@
+ <form [formGroup]="form" (submit)="onSaveRecipe()">
+
+  <div class="col-xs-6">
+      <label for="name">Name of the Recipe:</label>
+      <input type="text" 
+             [formControlName]="'name'" 
+             placeholder="recipe name">  &nbsp;
+      <span *ngIf="form.get('name').touched && form.get('name').invalid">Please enter a name</span>
+      <br> <br> 
+      <label for="description">Description:</label>
+      <textarea type="text" 
+             id="description"
+             formControlName="description"
+             placeholder="description">
+      </textarea>  &nbsp;
+      <span *ngIf="form.get('description').touched && form.get('description').invalid">Please enter description</span> 
+      <br> <br> 
+      <div>
+           <div class="image-preview">
+              <img [src]="recipeImageUrl">
+           </div>  
+           
+           <button class="btn btn-primary"
+                type="button" 
+               (click)="recipeFileInput.click()"
+               >Add image for recipe</button>
+           <input type="file" #recipeFileInput 
+               (change)="onRecipeImagePicked($event)">
+      </div>    
+      <br> <br>
+      <h3>
+          <b>Ingredients: &nbsp;
+          <a style="cursor: pointer;" (click)="onAddIngredient($event,i)">➕</a>
+          </b>
+      </h3>
+       <div formArrayName="ingredients" *ngFor="let ingredient of form.get('ingredients').controls; let i=index;">
+           <div [formGroupName]="i">
+                <label>Name of the Ingredient:</label>
+                <input type="text" 
+                       formControlName="ingredientName" 
+                       placeholder="Ingredient name">  &nbsp;
+                <!-- <span *ngIf="form.get('ingredients','ingredientName').touched && form.get('ingredients','ingredientName').invalid">Please enter a name</span> -->
+                <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                <br><br>
+                <label>Price:</label>
+                <input type="text" 
+                       id="price"
+                       formControlName="price"
+                       placeholder="price">
+                &nbsp;
+                <!-- <span *ngIf="form.get('ingredients','price').touched && form.get('ingredients','price').invalid">Please enter a valid price</span>  -->
+                <br><br>
+                <label>Quantity:</label>
+                <input type="text" 
+                       id="quantity"
+                       formControlName="quantity"
+                       placeholder="quantity">
+                 &nbsp;
+                <!-- <span *ngIf="form.get('ingredients','quantity').touched && form.get('ingredients','quantity').invalid">Please enter quantity</span>  -->
+                <br><br>
+                <div>
+                      <div class="image-preview">
+                            <img *ngIf="uploadStatus[i]==true, else dummy" [src]="ingredientImageUrl[i]">
+                            <ng-template #dummy><img [src]="dummyImageUrl"> </ng-template>
+                       </div>
+                     <button class="btn btn-primary"
+                          type="button" 
+                         (click)="ingredientFileInput.click()"
+                         >Add image for Ingredient</button>
+                     <input type="file" #ingredientFileInput 
+                         (change)="onIngredientImagePicked($event,i)">            
+                                         
+                </div> 
+                <div>
+            </div>
+           </div>      
+       </div>      
+  </div>
+  
+  <div class="col-xs-12">
+      <div class="ingredients">
+            Ingredients:
+            <ul class="list-group">
+                <div *ngIf="!editMode, else RecipeEdit">
+                        <li class="list-group-item" 
+                            style="background-color: rgb(175, 211, 109); color:rgb(20, 19, 19)"
+                           *ngFor="let ingredient of form.get('ingredients').controls; let i=index"
+                        >
+                        Ingredient {{i+1}}: <br><br>
+                        <b style="color:black">{{ form.controls.ingredients.controls[i].controls.ingredientName.value }}</b>&nbsp;
+                        <br><img [src]="form.controls.ingredients.controls[i].controls.ingredientImage.value"
+                             alt="" style="height:80px ;width: 70px" >                     
+                        <span class="badge">
+                        Price: {{ form.controls.ingredients.controls[i].controls.price.value}} <br><br>
+                        Quantity: {{ form.controls.ingredients.controls[i].controls.quantity.value}}
+                        </span> 
+                        <a class="delete" style="cursor: pointer" (click)="onDeleteIngredient(i)">❌</a>
+                   </li>
+                </div>
+                <ng-template #RecipeEdit>
+                    <li class="list-group-item"
+                        style="background-color: rgb(175, 211, 109); color:rgb(20, 19, 19)"
+                        *ngFor="let ingredient of _ingredients; let i = index"
+                    >
+                    Ingredient {{i+1}}: <br><br>
+                    <b style="color:black">{{ ingredient.name }}</b>&nbsp;
+                    <br><img [src]="ingredient.imagePath"
+                         alt="" style="height:80px ;width: 70px" >                     
+                    <span class="badge">
+                    Price: {{ ingredient.price}} <br><br>
+                    Quantity: {{ ingredient.quantity}}
+                    </span> 
+                    <a class="delete" style="cursor: pointer" (click)="onDeleteIngredientFromStoredRecipe(i)">❌</a>
+                    </li>
+                    <li class="list-group-item" 
+                    style="background-color: rgb(175, 211, 109); color:rgb(20, 19, 19)"
+                   *ngFor="let ingredient of form.get('ingredients').controls; let j=index;"
+                    >  
+                    Ingredient {{j+_ingredients.length+1}}: <br><br> 
+                    <b style="color:black">{{ form.controls.ingredients.controls[j].controls.ingredientName.value }}</b>&nbsp;
+                    <br><img [src]="form.controls.ingredients.controls[j].controls.ingredientImage.value"
+                         alt="" style="height:80px ;width: 70px" >                     
+                    <span class="badge">
+                    Price: {{ form.controls.ingredients.controls[j].controls.price.value}} <br><br>
+                    Quantity: {{ form.controls.ingredients.controls[j].controls.quantity.value}}
+                    </span> 
+                    <a class="delete" style="cursor: pointer" (click)="onDeleteIngredient(j)">❌</a>              
+                    </li>
+                </ng-template>
+          </ul>   
+      </div>
+      
+      <button *ngIf="!editMode; else editRecipeButton" class="btn btn-primary" type="submit">Add Recipe</button> 
+      <ng-template #editRecipeButton><button class="btn btn-primary" type="submit">Edit Recipe</button> </ng-template> 
+ 
+    </div>
+  
+  </form> 
+  

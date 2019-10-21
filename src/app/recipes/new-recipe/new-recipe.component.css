@@ -1,0 +1,57 @@
+
+input[type='file']{
+    visibility: hidden;
+}
+
+.col-xs-12{
+    margin-top: 5%;   
+    width:90%;
+}
+.col-xs-12 button{
+    margin-top: 5%;
+    width:40%;
+    margin-left: 25%;
+   
+}
+.col-xs-6{    
+    margin-left:2%;
+   
+}
+.col-xs-4{    
+    margin-left:2%;
+    width:40%;
+  
+}
+.image-preview{
+    height:50px;
+    width:500px;
+    margin-left:40%;
+    margin-top: 2%;
+    
+}
+.image-preview img{
+    height:100px;
+    margin-left:5%
+   
+}
+label{
+    width:200px;
+ }
+ span{
+     color:red;
+     width:100px;
+ }
+ a{
+     width:20px;
+     height:20px;
+ }
+ .badge{
+  color: rgb(17, 19, 22);
+  background-color:white;
+  /* margin-left: 1px; */
+  
+ }
+.delete{
+    margin-left: 800px;
+}
+ 

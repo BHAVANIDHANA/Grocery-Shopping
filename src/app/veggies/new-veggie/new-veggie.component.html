@@ -1,0 +1,33 @@
+<!-- <button (click)="onAddVeggie()">Add veggie</button> -->
+<!--  [formGroup]="form" here form is an object, but in cases where strings are passed 
+ [formControlName]="'name'" or can use formControlName="name"-->
+
+<form [formGroup]="form" (submit)="onSaveVeggie()">
+
+  <label for="name">Name of the veggie:</label>
+  <input type="text" 
+         [formControlName]="'name'" 
+         placeholder="veggie name">  &nbsp;
+  <span *ngIf="form.get('name').touched && form.get('name').invalid">Please enter a name</span>
+  <br> <br> 
+  <label for="price">Price:</label>
+  <input type="number" 
+         id="price"
+         formControlName="price"
+         placeholder="price">  &nbsp;
+  <span *ngIf="form.get('price').touched && form.get('price').invalid">Please enter a valid price</span> 
+  <br> <br> 
+  <div>
+       <div class="image-preview">
+          <img [src]="imageUrl">
+       </div>    
+       <button class="btn btn-primary"
+            type="button" 
+           (click)="fileInput.click()"
+           >Add image</button>
+       <input type="file" #fileInput 
+           (change)="onImagePicked($event)">
+  </div>    
+  <br>   
+  <button class="btn btn-primary" type="submit">Add veggie</button> 
+</form> 

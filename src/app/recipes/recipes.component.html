@@ -1,0 +1,16 @@
+<button  *ngIf="isAdmin" class="btn btn-success" 
+        routerLinkActive="active"
+        [routerLink]="['/addRecipe']"
+>New Recipe</button>
+
+<hr>
+
+<div class="row">
+  <div class="col-xs-5">
+    <app-recipe-list></app-recipe-list>
+  </div>
+  <div class="col-xs-5">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+    

@@ -1,0 +1,7 @@
+.carousel-inner img {
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+    max-height:450px;
+
+}
+

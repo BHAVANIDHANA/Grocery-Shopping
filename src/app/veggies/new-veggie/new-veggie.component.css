@@ -1,0 +1,32 @@
+
+form{
+margin-left: 25%;
+}
+
+label{
+   width:200px;
+}
+
+input[type='file']{
+visibility:hidden;
+}
+
+.image-preview{
+    height:50px;
+    width:500px;
+    margin-left:20%;
+    margin-top: 2%;
+}
+
+.image-preview img{
+    height:100px;
+}
+
+span{    
+    color: red;
+}
+
+button[type='submit']{
+    margin-top: 2%;
+     width:450px;
+}

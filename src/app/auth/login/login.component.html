@@ -1,0 +1,33 @@
+<form (ngSubmit)="onLogin(loginForm)" #loginForm="ngForm">
+
+    <div class="row">
+            <label class="col-xs-3" for="email">E-mail:</label>
+            <input class="col-xs-4" type="email" 
+                   placeholder="Email"
+                   id='email'
+                   name='email'
+                   ngModel
+                   #email="ngModel"
+                   required email>  &nbsp;
+            <span *ngIf="email.touched && email.invalid" class="col-xs-4">Please enter a valid email</span>
+    </div>
+    <br>
+    <div class="row">
+            <label class="col-xs-3" for="password">Password:</label>
+            <input  class="col-xs-4" type="password" 
+                   placeholder="Password"
+                   ngModel
+                   id='password'
+                   name='password'
+                   #password="ngModel"
+                   required
+                   minlength="3">  &nbsp;
+            <span *ngIf="password.touched && password.invalid" class="col-xs-4">Please enter a valid password</span> 
+    </div>   
+     <div class="row login">
+            <button class="btn btn-primary" type="submit"><b>Login</b></button> 
+     </div> 
+     
+   
+  </form> 
+  

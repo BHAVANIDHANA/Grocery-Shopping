@@ -1,0 +1,31 @@
+
+<div class="row">
+    <div class="col-xs-5">
+        <img [src]="veggie.imagePath" style="width:50%;" alt="imagePath">        
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+        {{veggie.name}}
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+       Price: ${{veggie.price}} per Kg
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+            <label for="quantity">Quantity:</label>
+            <input  style="width:70px;" type="number" id="quantity" class="form-control" #quantity>Kg
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+        <button class="btn btn-primary" 
+        (click)="onAddingToShoppingList()"
+        
+        >Add to Shopping List</button>
+    </div>
+</div>
+

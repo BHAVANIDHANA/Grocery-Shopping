@@ -1,0 +1,32 @@
+
+<div class="card" style="width:35rem">
+    <div class="card-body">
+      <div class="pull-left">
+      <h5 class="card-title">{{veggie.name}}</h5>
+      <!-- <h6 class="card-subtitle mb-2 text-muted">special offers</h6> -->
+      <p class="card-text">Price : {{veggie.price}}$ per Kilo</p>
+      <a *ngIf="userIsAuthenticated"
+         style="cursor:pointer" class="card-link" 
+         [routerLink]="['/veggies',veggie.id]"
+         routerLinkActive="active"
+      >Buy</a>   <br> <br>
+     <!--the below 2 are only permissible for admin-->
+      <a *ngIf="isAdmin"
+         style="cursor:pointer" class="card-link" 
+         [routerLink]="['/edit',veggie.id]"
+         routerLinkActive="active"
+      >Edit</a>  &nbsp;
+      <a *ngIf="isAdmin" 
+         style="cursor:pointer" class="card-delete" 
+         (click)="onDeleteVeggie()"
+      >Delete</a>   
+      </div>
+      <span class="pull-right">
+          <img [src]="veggie.imagePath" 
+               class="image-responsive"
+               style="max-width: 70px;" alt="imagePath">
+        </span>
+    </div>
+  </div>
+
+
