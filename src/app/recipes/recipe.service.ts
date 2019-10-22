@@ -57,7 +57,7 @@ export class RecipeService{
         console.log(recipeData);
         this.http.put<{message:string}>("http://localhost:3000/api/recipes/"+recipeId,recipeData)
         .subscribe(responseData=>{
-            console.log(responseData.message);            
+            alert(responseData.message);            
         });
        
     }
@@ -90,11 +90,10 @@ export class RecipeService{
        
         this.http.post<{message:string, recipeId:string}>("http://localhost:3000/api/recipes",recipeData)
         .subscribe(responseData=>{
-            console.log(responseData.message);
             recipeData.id = responseData.recipeId;
             this.recipes.push(recipeData);
             this.recipesUpdated.next(this.recipes.slice());
-            
+            alert(responseData.message);
         });
     }
     getIngredientControl(length:number, ingredientArray:FormArray){
@@ -126,7 +125,7 @@ export class RecipeService{
 
     onDeleteRecipe(id:string){
         this.http.delete<{message:string}>("http://localhost:3000/api/recipes/"+id).subscribe(responseData=>{
-             console.log(responseData);
+             alert(responseData.message);
             //  let RecipeIndex= this.recipes.findIndex(recipe=>recipe.id==id);
             //  this.recipes.splice(RecipeIndex,1);
              this.recipes= this.recipes.filter(recipe=>recipe.id!==id);

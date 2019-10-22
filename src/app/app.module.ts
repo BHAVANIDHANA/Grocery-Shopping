@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+// import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -30,6 +31,7 @@ import { AuthService } from './auth/auth.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { PopUpBoxComponent } from './pop-up-box/pop-up-box.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { ErrorInterceptor } from './error-interceptor';
 
 @NgModule({
   declarations: [
@@ -53,6 +55,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
     SignUpComponent,
     PopUpBoxComponent,
     CheckoutComponent
+    // MatDialogModule
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,13 @@ import { CheckoutComponent } from './checkout/checkout.component';
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [ {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true}, VeggiesService,ShoppingService,RecipeService, AuthService],
+  providers: [ {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},
+               {provide:HTTP_INTERCEPTORS, useClass:ErrorInterceptor, multi:true},
+               VeggiesService,
+               ShoppingService,
+               RecipeService,
+               AuthService
+             ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

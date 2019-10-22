@@ -42,7 +42,7 @@ export class VeggiesService{
         
         this.http.post<{message:string,veggieId:string}>("http://localhost:3000/api/veggies",veggieData)
         .subscribe(responseData=>{
-             console.log(responseData.message);
+             alert(responseData.message);
             veggieData.id=responseData.veggieId;//not required but to be safe
             this.veggies.push(veggieData);//locally adding new data to veggies
             // and before adding the new veggie on 
@@ -57,7 +57,7 @@ export class VeggiesService{
         console.log(veggieData)
         this.http.put<{message:string}>("http://localhost:3000/api/veggies/"+id,veggieData)
         .subscribe(responseData=>{
-            console.log(responseData.message);   
+            alert(responseData.message);   
         });
     }
     
@@ -65,10 +65,11 @@ export class VeggiesService{
        return this.veggiesUpdated.asObservable();
     }
     deleteVeggie(veggieId:string){
-        this.http.delete("http://localhost:3000/api/veggies/"+veggieId)
-        .subscribe(()=>{
+        this.http.delete<{message:string}>("http://localhost:3000/api/veggies/"+veggieId)
+        .subscribe((response)=>{
             this.veggies = this.veggies.filter(veggie=>veggie.id!==veggieId);
             this.veggiesUpdated.next(this.veggies.slice());
+            alert(response.message);
             });
     }
     getVeggiesByIndex(indexNum:number){

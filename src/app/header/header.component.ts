@@ -11,7 +11,6 @@ import { ShoppingService } from '../shopping-list/shopping.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   authStatusSub:Subscription;
   itemsCountSub_1:Subscription;
-  itemsCountSub_2:Subscription;
   userIsAuthenticated = false;
   itemsCount=0;
   entryMode=true;
@@ -23,13 +22,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authStatusSub = this.authService.getUserAuthListener().subscribe(isAuthenticated=>{
       this.userIsAuthenticated = isAuthenticated;      
     });
-    if(this.userIsAuthenticated){   
-      if(this.entryMode){
+    if(this.userIsAuthenticated){     
         this.itemsCount=this.authService.getUserItemsCount();
         this.itemsCountSub_1= this.authService.getItemsCountListener().subscribe(count=>{
           this.itemsCount=count;
-        });
-      }
+          // console.log("in header.ts"+this.itemsCount);
+        });      
     }
   } 
   // onCart(){
@@ -43,7 +41,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.authStatusSub.unsubscribe();
     this.itemsCountSub_1.unsubscribe();
-    this.itemsCountSub_2.unsubscribe();
+   
   }
 
  onLogout(){

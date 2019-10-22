@@ -60,8 +60,12 @@ export class AuthService implements OnDestroy{
         
         this.http.post<{message:String}>("http://localhost:3000/api/users/signUp",userData)
         .subscribe(responseData=>{
-            console.log(responseData.message);
-        });
+                       alert(responseData.message);
+                       this.router.navigate(['/']);
+                   },error=>{
+                    this.authStatusUpdated.next(false);
+                   }
+                  );
     }
 
     login(email:string, password:string){
@@ -93,8 +97,12 @@ export class AuthService implements OnDestroy{
                     this.isAdmin=true;
                     this.adminUpdated.next(true);
                 }
-                this.router.navigate(["/"]);       
+                alert("User logged-In");
+                this.router.navigate(["/"]);     
+
             }                         
+        },error=>{
+            this.authStatusUpdated.next(false);
         });         
     }
 
@@ -122,7 +130,7 @@ export class AuthService implements OnDestroy{
             this.userAddressUpdated.next(authInformation.authAddress); 
             this.countSub = this.shoppingService.getShoppingItemsCountUpdateListener()
             .subscribe(count=>{
-                console.log("counter"+count);
+                // console.log("counter"+count);
                 this._userItemsCount=count;
                 this.userItemsCountUpdated.next(count);
             });     
@@ -141,6 +149,7 @@ export class AuthService implements OnDestroy{
         this.clearAuthData();
         this.isAdmin=false;
         this.adminUpdated.next(false);
+        alert("User logged-Out");
         this.router.navigate(["/"]);
     }
 
