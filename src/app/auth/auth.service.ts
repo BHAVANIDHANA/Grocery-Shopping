@@ -10,9 +10,11 @@ export class AuthService{
     tokenTimer:any;
     private authStatusListener = new Subject<boolean>();
     private adminListener = new Subject<boolean>();
+    private userAddressListener = new Subject<string>();
     isAuthenticated=false;
     isAdmin=false;
     _email:string;
+    _userAddress:string;
 
     constructor(public http: HttpClient,public router:Router){}
     
@@ -31,6 +33,12 @@ export class AuthService{
     }
     getAdminListener(){
         return this.adminListener.asObservable();
+    }
+    getUserAddress(){
+        return this._userAddress;
+    }
+    getUserAddressListener(){
+        return this.userAddressListener.asObservable();
     }
 
     createUser(email:string, password:string, address:string){
@@ -51,7 +59,7 @@ export class AuthService{
             'email':email,
             'password':password
         };        
-        this.http.post<{token:string, expiresIn:number, email:string}>("http://localhost:3000/api/users/login",authData)
+        this.http.post<{token:string, expiresIn:number, email:string, address:string}>("http://localhost:3000/api/users/login",authData)
         .subscribe(result=>{
             this.token = result.token;            
             if(this.token){     
@@ -60,10 +68,12 @@ export class AuthService{
                 this.setTokenTimer(expiresInDuration);
                 this.isAuthenticated=true;
                 this.authStatusListener.next(true);
+                this._userAddress=result.address;
+                this.userAddressListener.next(result.address);
                 const now = new Date();
                 const expirationDate = new Date(now.getTime()+expiresInDuration*1000);
                 console.log(expirationDate);
-                this.saveAuthData(this.token,expirationDate,result.email);
+                this.saveAuthData(this.token,expirationDate,result.email,result.address);
                 console.log(this._email);
                 if(this._email=="Admin@gmail.com"){
                     this.isAdmin=true;
@@ -93,7 +103,9 @@ export class AuthService{
             this.token=authInformation.authToken;
             this.setTokenTimer(leftTime/1000);
             this.isAuthenticated=true;
-            this.authStatusListener.next(true);            
+            this.authStatusListener.next(true); 
+            this._userAddress=authInformation.authAddress;
+            this.userAddressListener.next(authInformation.authAddress);           
             if(authInformation.authEmail=="Admin@gmail.com"){
                 this.isAdmin=true;
                 this.adminListener.next(true);
@@ -112,28 +124,31 @@ export class AuthService{
         this.router.navigate(["/"]);
     }
 
-    private saveAuthData(token:string, expiresInDuration:Date, email:string){
+    private saveAuthData(token:string, expiresInDuration:Date, email:string,address:string){
         localStorage.setItem('token',token);
         localStorage.setItem('expiresIn',expiresInDuration.toISOString());
         localStorage.setItem('email',email);
+        localStorage.setItem('address',address);
     }
 
     private clearAuthData(){
         localStorage.removeItem('token');
         localStorage.removeItem('expiresIn');
         localStorage.removeItem('email');
+        localStorage.removeItem('address');
     }
 
     private getAuthData(){
         const authToken=localStorage.getItem('token');
         const authExpiresIn=localStorage.getItem('expiresIn');
         const authEmail=localStorage.getItem('email');
+        const authAddress=localStorage.getItem('address');
         
-        if(!authToken || !authExpiresIn || !authEmail){
+        if(!authToken || !authExpiresIn || !authEmail ||!authAddress){
           return;
         }
         const expiresIn=new Date(authExpiresIn)
-        const authData={authToken,expiresIn, authEmail};
+        const authData={authToken,expiresIn, authEmail, authAddress};
       //  console.log(authData);
         return authData;
        

@@ -1,0 +1,24 @@
+.panel-default{
+    margin-left:-100px;
+}
+p{
+    font-size:35px; 
+}
+label{
+    font-size:25px;
+}
+label[for=address]{
+    font-size: 20px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+button{
+    margin-left: 10px;
+    margin-top: 10px;
+}
+textarea{
+margin-left: 10px;
+margin-top:10px;
+width:300px;
+height:80px;
+}

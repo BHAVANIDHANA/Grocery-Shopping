@@ -12,9 +12,16 @@
              
       </div>
      
-      <span class="pull-right" style="cursor:pointer" (click)="onDeleteItem(shplst.id)">✘</span>
+      <span class="pull-right" style="cursor:pointer"
+           (click)="onDeleteItem(shplst.id)">✘</span>
 
     </li>
     </ul>
+    <div class="col-xs-5">
+      <div *ngIf="total!==0" class="panel panel-default">
+        <div class="panel-heading" style="background-color: rgb(229, 230, 225);" >Total : {{total}} $</div>
+        <button class="btn btn-danger" routerLinkActive="active" [routerLink]="['/checkout']">Buy All</button>
+      </div>
+    </div>
   </div>
 </div>

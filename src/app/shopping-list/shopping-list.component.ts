@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ShoppingItem } from '../shared/shopping-item.model';
 import { ShoppingService } from './shopping.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shopping-list',
@@ -12,7 +13,8 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
  
 shoppedList:ShoppingItem[];
 shoppingSub:Subscription;
-  constructor(private shoppingService:ShoppingService) { }
+total:number=0;
+  constructor(private shoppingService:ShoppingService, private route:Router) { }
 
   ngOnInit() {
     //DEFAULT SHOPPINGLIST ITEMS
@@ -22,17 +24,22 @@ shoppingSub:Subscription;
     this.shoppingSub=this.shoppingService.getShoppingListUpdateListener().subscribe(
      (fullShoppingData:ShoppingItem[])=>{
        this.shoppedList=fullShoppingData;
-     }
-   );
-  
-   
+       if(this.shoppedList.length>0){
+          for(let i=0;i<this.shoppedList.length;i++){
+            this.total=this.total+(this.shoppedList[i].price*this.shoppedList[i].quantity);
+          }       
+        } 
+      }
+    );   
   }
-  onDeleteItem(itemId:string){
+  onDeleteItem(itemId:string){    
      this.shoppingService.onDeletingItem(itemId);
      this.shoppingSub=this.shoppingService.shoppingListUpdated.subscribe((shoppingData:ShoppingItem[])=>{
          this.shoppedList=shoppingData;
      });
+     this.total=0;
   }
+  
 
   ngOnDestroy(): void {
     this.shoppingSub.unsubscribe();

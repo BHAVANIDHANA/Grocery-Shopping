@@ -18,9 +18,7 @@
         <li routerLinkActive="active"><a style="cursor: pointer"
           [routerLink]="['/recipes']">Recipes</a></li>
 
-        <li *ngIf="userIsAuthenticated" routerLinkActive="active"><a  style="cursor: pointer"
-          [routerLink]="['/shopping-list']">Shopping List</a></li>
-
+      
         <!-- <li class="dropdown " appDropdown>
               <a class="dropdown-toggle" role="button" style="cursor:pointer">Manage<span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -31,6 +29,12 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
+          <li *ngIf="userIsAuthenticated" routerLinkActive="active">
+            <a style="cursor: pointer"
+            [routerLink]="['/shopping-list']"><span class="badge">{{itemsCount}}</span>
+            <img class="cart" src="/assets/images/cart6.png">
+            </a>            
+          </li>
           <li *ngIf="!userIsAuthenticated" router-link-ative="active"><a style="cursor: pointer"
             [routerLink]="['/signUp']"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
           <li *ngIf="!userIsAuthenticated" rouetLinkActive="active"><a style="cursor: pointer"

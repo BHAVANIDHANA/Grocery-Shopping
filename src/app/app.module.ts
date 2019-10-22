@@ -29,6 +29,7 @@ import { SignUpComponent } from './auth/signUp/signUp.component';
 import { AuthService } from './auth/auth.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { PopUpBoxComponent } from './pop-up-box/pop-up-box.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { PopUpBoxComponent } from './pop-up-box/pop-up-box.component';
     NewRecipeComponent,
     LoginComponent,
     SignUpComponent,
-    PopUpBoxComponent
+    PopUpBoxComponent,
+    CheckoutComponent
   ],
   imports: [
     BrowserModule,

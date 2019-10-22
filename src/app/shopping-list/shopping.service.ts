@@ -7,7 +7,8 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class ShoppingService{
- @Output() shoppingListUpdated=new Subject<ShoppingItem[]>()  
+ @Output() shoppingListUpdated=new Subject<ShoppingItem[]>();
+ private shoppingItemsCountUpdated = new Subject<number>();
  private shoppingList:ShoppingItem[]=[];
 
  constructor(private http:HttpClient){}
@@ -30,11 +31,15 @@ export class ShoppingService{
            // console.log(transformedItems);
            this.shoppingList = transformedItems;
            this.shoppingListUpdated.next(this.shoppingList.slice());
+           this.shoppingItemsCountUpdated.next(transformedItems.length);
         });
     }
 
     getShoppingListUpdateListener(){
         return this.shoppingListUpdated.asObservable();
+     }
+     getShoppingItemsCountUpdateListener(){
+        return this.shoppingItemsCountUpdated.asObservable();
      }
 
     addShoppingItems(shoppingData:ShoppingItem){
@@ -73,10 +78,12 @@ export class ShoppingService{
                 
                 this.shoppingList=this.shoppingList.filter(item=>item.id!==toBeDeletedItemId);
                 this.shoppingListUpdated.next(this.shoppingList.slice());
+                this.shoppingItemsCountUpdated.next(this.shoppingList.length);
             }
-        )
-        
-        
+        )      
     }
+    // getItemById(itemId:string){
+    //     this.http.get<{message:string}>("http://localhost:3000/api/shoppingItems/"+itemId)
+    // }  
    
 }
