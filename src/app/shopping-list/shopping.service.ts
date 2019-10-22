@@ -55,6 +55,8 @@ export class ShoppingService{
            console.log(responseData.message);
          this.shoppingList.push(transformedShoppingData);
          this.shoppingListUpdated.next(this.shoppingList.slice());
+        //  this.shoppingItemsCountUpdated.next(this.shoppingList.length);
+        this.getItems();
        })
        
     }

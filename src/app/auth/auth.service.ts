@@ -1,44 +1,55 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthData } from './auth-data.model';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { ShoppingService } from '../shopping-list/shopping.service';
 
 @Injectable()
-export class AuthService{
+export class AuthService implements OnDestroy{
+    
     private token:string;
     tokenTimer:any;
-    private authStatusListener = new Subject<boolean>();
-    private adminListener = new Subject<boolean>();
-    private userAddressListener = new Subject<string>();
+    private authStatusUpdated = new Subject<boolean>();
+    private adminUpdated = new Subject<boolean>();
+    private userAddressUpdated = new Subject<string>();
+    private userItemsCountUpdated = new Subject<number>();
     isAuthenticated=false;
     isAdmin=false;
     _email:string;
     _userAddress:string;
+    _userItemsCount:number;
+    countSub:Subscription;
 
-    constructor(public http: HttpClient,public router:Router){}
+    constructor(public http: HttpClient,public router:Router, private shoppingService:ShoppingService){}
     
     getToken(){
         return this.token;
     }
 
+    getUserItemsCount(){
+        return this._userItemsCount;
+    }
+    getItemsCountListener(){
+        return this.userItemsCountUpdated.asObservable();
+    }
     getIsAuthenticated(){
         return this.isAuthenticated;
     }
     getUserAuthListener(){
-        return this.authStatusListener.asObservable();
+        return this.authStatusUpdated.asObservable();
     }
     getIsAdmin(){
         return this.isAdmin;
     }
     getAdminListener(){
-        return this.adminListener.asObservable();
+        return this.adminUpdated.asObservable();
     }
     getUserAddress(){
         return this._userAddress;
     }
     getUserAddressListener(){
-        return this.userAddressListener.asObservable();
+        return this.userAddressUpdated.asObservable();
     }
 
     createUser(email:string, password:string, address:string){
@@ -59,7 +70,7 @@ export class AuthService{
             'email':email,
             'password':password
         };        
-        this.http.post<{token:string, expiresIn:number, email:string, address:string}>("http://localhost:3000/api/users/login",authData)
+        this.http.post<{token:string, expiresIn:number, email:string, address:string, itemsCount:number}>("http://localhost:3000/api/users/login",authData)
         .subscribe(result=>{
             this.token = result.token;            
             if(this.token){     
@@ -67,9 +78,12 @@ export class AuthService{
                 //settimeout takes time in millisecs
                 this.setTokenTimer(expiresInDuration);
                 this.isAuthenticated=true;
-                this.authStatusListener.next(true);
+                this.authStatusUpdated.next(true);
                 this._userAddress=result.address;
-                this.userAddressListener.next(result.address);
+                this.userAddressUpdated.next(result.address);
+                this._userItemsCount=result.itemsCount;
+                this.userItemsCountUpdated.next(result.itemsCount);
+                // console.log("items count"+this.getUserItemsCount());
                 const now = new Date();
                 const expirationDate = new Date(now.getTime()+expiresInDuration*1000);
                 console.log(expirationDate);
@@ -77,7 +91,7 @@ export class AuthService{
                 console.log(this._email);
                 if(this._email=="Admin@gmail.com"){
                     this.isAdmin=true;
-                    this.adminListener.next(true);
+                    this.adminUpdated.next(true);
                 }
                 this.router.navigate(["/"]);       
             }                         
@@ -103,24 +117,30 @@ export class AuthService{
             this.token=authInformation.authToken;
             this.setTokenTimer(leftTime/1000);
             this.isAuthenticated=true;
-            this.authStatusListener.next(true); 
+            this.authStatusUpdated.next(true); 
             this._userAddress=authInformation.authAddress;
-            this.userAddressListener.next(authInformation.authAddress);           
+            this.userAddressUpdated.next(authInformation.authAddress); 
+            this.countSub = this.shoppingService.getShoppingItemsCountUpdateListener()
+            .subscribe(count=>{
+                console.log("counter"+count);
+                this._userItemsCount=count;
+                this.userItemsCountUpdated.next(count);
+            });     
             if(authInformation.authEmail=="Admin@gmail.com"){
                 this.isAdmin=true;
-                this.adminListener.next(true);
+                this.adminUpdated.next(true);
             }
         }
     }
 
     logout(){
         this.token=null;
-        this.authStatusListener.next(false);
+        this.authStatusUpdated.next(false);
         this.isAuthenticated=false;
         clearTimeout(this.tokenTimer);
         this.clearAuthData();
         this.isAdmin=false;
-        this.adminListener.next(false);
+        this.adminUpdated.next(false);
         this.router.navigate(["/"]);
     }
 
@@ -129,6 +149,7 @@ export class AuthService{
         localStorage.setItem('expiresIn',expiresInDuration.toISOString());
         localStorage.setItem('email',email);
         localStorage.setItem('address',address);
+        // localStorage.setItem('itemsCount',itemsCount.toString());
     }
 
     private clearAuthData(){
@@ -136,6 +157,7 @@ export class AuthService{
         localStorage.removeItem('expiresIn');
         localStorage.removeItem('email');
         localStorage.removeItem('address');
+        // localStorage.removeItem('itemsCount');
     }
 
     private getAuthData(){
@@ -143,6 +165,7 @@ export class AuthService{
         const authExpiresIn=localStorage.getItem('expiresIn');
         const authEmail=localStorage.getItem('email');
         const authAddress=localStorage.getItem('address');
+        // const authItemsCount=localStorage.getItem('itemsCount');
         
         if(!authToken || !authExpiresIn || !authEmail ||!authAddress){
           return;
@@ -151,7 +174,8 @@ export class AuthService{
         const authData={authToken,expiresIn, authEmail, authAddress};
       //  console.log(authData);
         return authData;
-       
-
+    }
+    ngOnDestroy(): void {
+       this.countSub.unsubscribe();
     }
 }

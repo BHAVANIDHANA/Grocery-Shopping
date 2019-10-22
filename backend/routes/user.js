@@ -3,6 +3,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
+const ShoppingItem = require("../models/shoppingItem");
 
 router.post('/signUp',(req,res,next)=>{
     bcrypt.hash(req.body.password,10)
@@ -49,12 +50,19 @@ router.post("/login", (req, res,next)=>{
                                    'dhana&raghav_satya&venky_bhargavi&raj_deepti&tiana',
                                    { expiresIn:'1h'}
                                  );
-            //console.log(token);
-            res.status(200).json({
-            token: token,
-            expiresIn:3600,
-            email:fetchedUser.email,
-            address:fetchedUser.address
+             //console.log(token);
+            
+            ShoppingItem.find({creator:fetchedUser._id})
+            .then(items=>{
+                // console.log(items.length);
+                res.status(200).json({
+                    token: token,
+                    expiresIn:3600,
+                    email:fetchedUser.email,
+                    address:fetchedUser.address,
+                    itemsCount:items.length
+            });
+           
             });
     }).catch(err=>{
         return res.status(400).json({

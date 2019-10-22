@@ -31,7 +31,8 @@
       <ul class="nav navbar-nav navbar-right">
           <li *ngIf="userIsAuthenticated" routerLinkActive="active">
             <a style="cursor: pointer"
-            [routerLink]="['/shopping-list']"><span class="badge">{{itemsCount}}</span>
+            [routerLink]="['/shopping-list']">
+            <span *ngIf="itemsCount!==0" class="badge">{{itemsCount}}</span>
             <img class="cart" src="/assets/images/cart6.png">
             </a>            
           </li>

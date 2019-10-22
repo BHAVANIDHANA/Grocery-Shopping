@@ -1,5 +1,9 @@
 .panel-default{
     margin-left:-100px;
+    background-color:   rgb(229, 230, 225);;
+}
+.panel-heading{
+    background-color: rgb(225, 226, 230);
 }
 p{
     font-size:35px; 
@@ -21,4 +25,5 @@ margin-left: 10px;
 margin-top:10px;
 width:300px;
 height:80px;
+background-color: rgb(225, 226, 230);
 }
