@@ -20,7 +20,7 @@ addressSub:Subscription;
     })
   }
 onOrder(){
-  console.log("order confirmed!");
+  alert("Order confirmed!");
 }
 ngOnDestroy(): void {
   this.addressSub.unsubscribe();

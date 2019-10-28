@@ -20,7 +20,7 @@ router.put('/:id', checkAuth, (req,res,next)=>{
     })
     .catch(err=>{
         res.status(400).json({
-            error:err
+            message:"Not authorized!"
         });       
     })
 })
@@ -38,6 +38,10 @@ router.post('', checkAuth, (req,res,next)=>{
             message:'recipe succesfully added',
             recipeId: addedRecipe._id
         });
+    }).catch(err=>{
+        res.status(400).json({
+            message:"Not authorized!"
+        });       
     })   
 })
 
@@ -49,7 +53,7 @@ router.get('',(req,res,next)=>{
         });
    }).catch(err=>{
     res.status(400).json({
-        error:err
+        message:"recipes annot be fetched!"
     })
 });    
 });
@@ -62,7 +66,7 @@ router.delete('/:id', checkAuth, (req,res,next)=>{
        })
    }).catch(err=>{
        res.status(400).json({
-           error:err
+           message:"Not authorized!"
        })
    })
 });

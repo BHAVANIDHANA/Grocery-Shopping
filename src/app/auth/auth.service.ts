@@ -4,6 +4,8 @@ import { AuthData } from './auth-data.model';
 import { Subject, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ShoppingService } from '../shopping-list/shopping.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
 
 @Injectable()
 export class AuthService implements OnDestroy{
@@ -21,7 +23,11 @@ export class AuthService implements OnDestroy{
     _userItemsCount:number;
     countSub:Subscription;
 
-    constructor(public http: HttpClient,public router:Router, private shoppingService:ShoppingService){}
+    constructor(public http: HttpClient,
+                public router:Router, 
+                private shoppingService:ShoppingService,
+                private dialog:MatDialog
+               ){}
     
     getToken(){
         return this.token;
@@ -60,7 +66,8 @@ export class AuthService implements OnDestroy{
         
         this.http.post<{message:String}>("http://localhost:3000/api/users/signUp",userData)
         .subscribe(responseData=>{
-                       alert(responseData.message);
+                    //    alert(responseData.message);
+                       this.dialog.open(PopupMessagesComponent,{height:'200px', width:'460px', data:{title:"SignUp!",message:responseData.message}});
                        this.router.navigate(['/']);
                    },error=>{
                     this.authStatusUpdated.next(false);
@@ -97,7 +104,6 @@ export class AuthService implements OnDestroy{
                     this.isAdmin=true;
                     this.adminUpdated.next(true);
                 }
-                alert("User logged-In");
                 this.router.navigate(["/"]);     
 
             }                         
@@ -149,7 +155,13 @@ export class AuthService implements OnDestroy{
         this.clearAuthData();
         this.isAdmin=false;
         this.adminUpdated.next(false);
-        alert("User logged-Out");
+        // alert("Logged out successfully !");
+        this.dialog.open(PopupMessagesComponent,{ height:'200px',
+                                                  width:'460px', 
+                                                  data:{ title:"LogOut!",
+                                                         message:"Logged out successfully !"
+                                                       }
+                                                });
         this.router.navigate(["/"]);
     }
 

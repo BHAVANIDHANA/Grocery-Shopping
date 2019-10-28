@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators/';
 import { AuthService } from '../auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
 
 @Injectable()
 export class VeggiesService{
@@ -14,7 +16,10 @@ export class VeggiesService{
       private popUpMessage:string;
       private veggiesUpdated = new Subject<Vegetable[]>();
 
-    constructor(private shoppingservice:ShoppingService, private http : HttpClient, private authService:AuthService){
+    constructor(private shoppingservice:ShoppingService, 
+                private http : HttpClient, 
+                private authService:AuthService,
+                private dialog:MatDialog){
     }
 
     getVeggies(){
@@ -42,7 +47,12 @@ export class VeggiesService{
         
         this.http.post<{message:string,veggieId:string}>("http://localhost:3000/api/veggies",veggieData)
         .subscribe(responseData=>{
-             alert(responseData.message);
+            this.dialog.open(PopupMessagesComponent,{height:'200px', 
+                                                     width:'460px',
+                                                     data:{ title:"New Veggie!",
+                                                            message:responseData.message
+                                                          }
+           });        
             veggieData.id=responseData.veggieId;//not required but to be safe
             this.veggies.push(veggieData);//locally adding new data to veggies
             // and before adding the new veggie on 
@@ -57,7 +67,12 @@ export class VeggiesService{
         console.log(veggieData)
         this.http.put<{message:string}>("http://localhost:3000/api/veggies/"+id,veggieData)
         .subscribe(responseData=>{
-            alert(responseData.message);   
+            this.dialog.open(PopupMessagesComponent,{height:'200px', 
+                                                     width:'460px',
+                                                     data:{ title:"Update Veggie!",
+                                                            message:responseData.message
+                                                          }
+           });     
         });
     }
     
@@ -69,7 +84,12 @@ export class VeggiesService{
         .subscribe((response)=>{
             this.veggies = this.veggies.filter(veggie=>veggie.id!==veggieId);
             this.veggiesUpdated.next(this.veggies.slice());
-            alert(response.message);
+            this.dialog.open(PopupMessagesComponent,{height:'200px', 
+                                                     width:'460px',
+                                                     data:{ title:"Delete Veggie!",
+                                                            message:response.message
+                                                          }
+           });    
             });
     }
     getVeggiesByIndex(indexNum:number){

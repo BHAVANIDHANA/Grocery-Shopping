@@ -8,6 +8,8 @@ import { FormArray, FormControl } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
 
 @Injectable()
 export class RecipeService{
@@ -16,7 +18,12 @@ export class RecipeService{
     _ingredientsArray:FormArray;
             
     private recipesUpdated = new Subject<Recipe[]>();
-    constructor(private route:Router, private activatedRoute:ActivatedRoute, private shoppingservice:ShoppingService, private http:HttpClient, private authService:AuthService){}
+    constructor(private route:Router,
+                private activatedRoute:ActivatedRoute,
+                private shoppingservice:ShoppingService, 
+                private http:HttpClient, 
+                private authService:AuthService,
+                private dialog:MatDialog){}
     
     getRecipes(){
         this.http.get<{message:string,recipes:any}>("http://localhost:3000/api/recipes")
@@ -40,8 +47,7 @@ export class RecipeService{
              });
          })).subscribe(transformedRecipes=>{
              this.recipes=transformedRecipes;
-             this.recipesUpdated.next(this.recipes.slice());
-            
+             this.recipesUpdated.next(this.recipes.slice());       
          })
         
     }
@@ -57,7 +63,12 @@ export class RecipeService{
         console.log(recipeData);
         this.http.put<{message:string}>("http://localhost:3000/api/recipes/"+recipeId,recipeData)
         .subscribe(responseData=>{
-            alert(responseData.message);            
+            this.dialog.open(PopupMessagesComponent,{height:'200px', 
+                                                     width:'460px',
+                                                     data:{ title:"Update Recipe!",
+                                                            message:responseData.message
+                                                          }
+                                                    });             
         });
        
     }
@@ -93,7 +104,12 @@ export class RecipeService{
             recipeData.id = responseData.recipeId;
             this.recipes.push(recipeData);
             this.recipesUpdated.next(this.recipes.slice());
-            alert(responseData.message);
+            this.dialog.open(PopupMessagesComponent,{height:'200px', 
+                                                     width:'460px',
+                                                     data:{ title:"New Recipe!",
+                                                            message:responseData.message
+                                                          }
+                                                    });        
         });
     }
     getIngredientControl(length:number, ingredientArray:FormArray){
@@ -125,7 +141,12 @@ export class RecipeService{
 
     onDeleteRecipe(id:string){
         this.http.delete<{message:string}>("http://localhost:3000/api/recipes/"+id).subscribe(responseData=>{
-             alert(responseData.message);
+            this.dialog.open(PopupMessagesComponent,{height:'200px', 
+                                                     width:'460px',
+                                                     data:{ title:"Delete recipe!",
+                                                     message:responseData.message
+                                                    }
+           });        
             //  let RecipeIndex= this.recipes.findIndex(recipe=>recipe.id==id);
             //  this.recipes.splice(RecipeIndex,1);
              this.recipes= this.recipes.filter(recipe=>recipe.id!==id);

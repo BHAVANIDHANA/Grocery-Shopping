@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Vegetable } from '../vegetable.model';
 import { VeggiesService } from '../veggies.service';

@@ -3,6 +3,8 @@ import { ShoppingItem } from '../shared/shopping-item.model';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
 // import { Ingredient } from '../shared/ingredient.model';
 
 @Injectable()
@@ -11,7 +13,8 @@ export class ShoppingService{
  private shoppingItemsCountUpdated = new Subject<number>();
  private shoppingList:ShoppingItem[]=[];
 
- constructor(private http:HttpClient){}
+ constructor(private http:HttpClient,
+            private dialog:MatDialog){}
    
     getItems(){
         this.http.get<{message:string, shoppingItems:any}>
@@ -57,6 +60,7 @@ export class ShoppingService{
          this.shoppingListUpdated.next(this.shoppingList.slice());
         //  this.shoppingItemsCountUpdated.next(this.shoppingList.length);
         this.getItems();
+           
        })
        
     }
@@ -81,6 +85,12 @@ export class ShoppingService{
                 this.shoppingList=this.shoppingList.filter(item=>item.id!==toBeDeletedItemId);
                 this.shoppingListUpdated.next(this.shoppingList.slice());
                 this.shoppingItemsCountUpdated.next(this.shoppingList.length);
+                this.dialog.open(PopupMessagesComponent,{height:'200px', 
+                                                 width:'460px',
+                                                 data:{ title:"Delete shopping item!",
+                                                        message:responseData.message
+                                                      }
+           }); 
             }
         )      
     }

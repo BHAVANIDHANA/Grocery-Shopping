@@ -16,6 +16,10 @@ router.post('',checkAuth,(req,res,next)=>{
        message:"veggie added successfully",
        veggieId: createdVeggie._id
     });
+    }).catch(err=>{
+        res.status(400).json({
+            message:"Not authorized!"
+        });       
     }) 
 });
  
@@ -34,9 +38,9 @@ router.put('/:id',checkAuth,(req,res,next)=>{
         });
     }).catch(err=>{
         res.status(400).json({
-            error:err
-        })
-    });     
+            message:"Not authorized!"
+        });       
+    }) ; 
 });
  
 router.get('',(req,res,next)=>{
@@ -47,9 +51,9 @@ router.get('',(req,res,next)=>{
         });
     }).catch(err=>{
         res.status(400).json({
-            error:err
-        })
-    });       
+            message:"veggies can not be fetched!"
+        });       
+    }) ;    
 });
  
 router.delete('/:id',checkAuth,(req,res,next)=>{
@@ -61,9 +65,9 @@ router.delete('/:id',checkAuth,(req,res,next)=>{
         });
     }).catch(err=>{
         res.status(400).json({
-            error:err
-        })
-    });    
+            message:"Not authorized!"
+        });       
+    })  ;
 });
 
 module.exports=router;

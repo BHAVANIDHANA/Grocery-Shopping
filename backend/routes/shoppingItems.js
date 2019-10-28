@@ -13,7 +13,7 @@ router.get('',checkAuth, (req,res,next)=>{
       //console.log(documents);
   }).catch(err=>{
     res.status(400).json({
-        error:err
+        message:"shopping list can't be fetched!"
     })
 });    
 });
@@ -31,7 +31,11 @@ router.post('',checkAuth, (req,res,next)=>{
              message:"shopping item successfully added to shopping list",
              shoppingItem: responseData
           });
-      }) 
+      }).catch(err=>{
+        res.status(400).json({
+            message:"Not authorized!"
+        });       
+    }) 
     
 });
 
@@ -42,8 +46,8 @@ router.delete('/:id', checkAuth, (req,res,next)=>{
         })
     }).catch(err=>{
         res.status(400).json({
-            error:err
-        })
-    });    
+            message:"Not authorized!"
+        });       
+    });  
 });
 module.exports = router;

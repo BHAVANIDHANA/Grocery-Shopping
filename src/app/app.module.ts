@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-// import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -29,9 +29,10 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/signUp/signUp.component';
 import { AuthService } from './auth/auth.service';
 import { AuthInterceptor } from './auth/auth-interceptor';
-import { PopUpBoxComponent } from './pop-up-box/pop-up-box.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ErrorInterceptor } from './error-interceptor';
+import { PopupMessagesComponent } from './popup-messages/popup-messages.component'
+
 
 @NgModule({
   declarations: [
@@ -53,9 +54,8 @@ import { ErrorInterceptor } from './error-interceptor';
     NewRecipeComponent,
     LoginComponent,
     SignUpComponent,
-    PopUpBoxComponent,
-    CheckoutComponent
-    // MatDialogModule
+    CheckoutComponent,
+    PopupMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +63,8 @@ import { ErrorInterceptor } from './error-interceptor';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [ {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},
                {provide:HTTP_INTERCEPTORS, useClass:ErrorInterceptor, multi:true},
@@ -72,6 +73,7 @@ import { ErrorInterceptor } from './error-interceptor';
                RecipeService,
                AuthService
              ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents:[PopupMessagesComponent]
 })
 export class AppModule { }
