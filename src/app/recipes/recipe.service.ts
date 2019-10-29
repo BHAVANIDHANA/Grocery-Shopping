@@ -10,6 +10,9 @@ import { AuthService } from '../auth/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL=environment.apiUrl+"/recipes";
 
 @Injectable()
 export class RecipeService{
@@ -26,7 +29,7 @@ export class RecipeService{
                 private dialog:MatDialog){}
     
     getRecipes(){
-        this.http.get<{message:string,recipes:any}>("http://localhost:3000/api/recipes")
+        this.http.get<{message:string,recipes:any}>(BACKEND_URL)
          .pipe(map(recipesData=>{
              return recipesData.recipes.map(recipe=>{
                  return {
@@ -61,7 +64,7 @@ export class RecipeService{
             ingredients: this.getConcatedIngredientControl(length,ingredientsArray,existingIngredients)            
         }
         // console.log(recipeData);
-        this.http.put<{message:string}>("http://localhost:3000/api/recipes/"+recipeId,recipeData)
+        this.http.put<{message:string}>(BACKEND_URL+"/"+recipeId,recipeData)
         .subscribe(responseData=>{
             this.dialog.open(PopupMessagesComponent,{height:'200px', 
                                                      width:'460px',
@@ -99,7 +102,7 @@ export class RecipeService{
         }
         // console.log(recipeData);
        
-        this.http.post<{message:string, recipeId:string}>("http://localhost:3000/api/recipes",recipeData)
+        this.http.post<{message:string, recipeId:string}>(BACKEND_URL,recipeData)
         .subscribe(responseData=>{
             recipeData.id = responseData.recipeId;
             this.recipes.push(recipeData);
@@ -140,7 +143,7 @@ export class RecipeService{
     }
 
     onDeleteRecipe(id:string){
-        this.http.delete<{message:string}>("http://localhost:3000/api/recipes/"+id).subscribe(responseData=>{
+        this.http.delete<{message:string}>(BACKEND_URL+"/"+id).subscribe(responseData=>{
             this.dialog.open(PopupMessagesComponent,{height:'200px', 
                                                      width:'460px',
                                                      data:{ title:"Delete recipe!",

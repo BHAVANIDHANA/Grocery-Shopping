@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 import { ShoppingService } from '../shopping-list/shopping.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
+import { environment } from '../../environments/environment';
 
+const BACKEND_URL=environment.apiUrl+"/users";
 @Injectable()
 export class AuthService implements OnDestroy{
     
@@ -64,7 +66,7 @@ export class AuthService implements OnDestroy{
                           'address':address
                          };
         
-        this.http.post<{message:String}>("http://localhost:3000/api/users/signUp",userData)
+        this.http.post<{message:String}>(BACKEND_URL+"/signUp",userData)
         .subscribe(responseData=>{
                     //    alert(responseData.message);
                        this.dialog.open(PopupMessagesComponent,{height:'200px', width:'460px', data:{title:"SignUp!",message:responseData.message}});
@@ -81,7 +83,7 @@ export class AuthService implements OnDestroy{
             'email':email,
             'password':password
         };        
-        this.http.post<{token:string, expiresIn:number, email:string, address:string, itemsCount:number}>("http://localhost:3000/api/users/login",authData)
+        this.http.post<{token:string, expiresIn:number, email:string, address:string, itemsCount:number}>(BACKEND_URL+"/login",authData)
         .subscribe(result=>{
             this.token = result.token;            
             if(this.token){     

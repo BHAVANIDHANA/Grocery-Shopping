@@ -8,6 +8,9 @@ import { map } from 'rxjs/operators/';
 import { AuthService } from '../auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL=environment.apiUrl+"/veggies";
 
 @Injectable()
 export class VeggiesService{
@@ -24,7 +27,7 @@ export class VeggiesService{
 
     getVeggies(){
         //   return  this.veggies.slice();
-       this.http.get<{message:string,veggies:any}>("http://localhost:3000/api/veggies")
+       this.http.get<{message:string,veggies:any}>(BACKEND_URL)
        .pipe(map(veggiesData=>{
            return veggiesData.veggies.map(veggie=>{
                return {
@@ -45,7 +48,7 @@ export class VeggiesService{
     addNewVeggie(name:string,imagePath:string,price:number){
         const veggieData :Vegetable={id:null,name:name,imagePath:imagePath,price:price};
         
-        this.http.post<{message:string,veggieId:string}>("http://localhost:3000/api/veggies",veggieData)
+        this.http.post<{message:string,veggieId:string}>(BACKEND_URL,veggieData)
         .subscribe(responseData=>{
             this.dialog.open(PopupMessagesComponent,{height:'200px', 
                                                      width:'460px',
@@ -65,7 +68,7 @@ export class VeggiesService{
     updateVeggie(id:string, name:string, imagePath:string, price:number){
         const veggieData:Vegetable = {id:id, name:name, imagePath:imagePath, price:price};
         // console.log(veggieData)
-        this.http.put<{message:string}>("http://localhost:3000/api/veggies/"+id,veggieData)
+        this.http.put<{message:string}>(BACKEND_URL+"/"+id,veggieData)
         .subscribe(responseData=>{
             this.dialog.open(PopupMessagesComponent,{height:'200px', 
                                                      width:'460px',
@@ -80,7 +83,7 @@ export class VeggiesService{
        return this.veggiesUpdated.asObservable();
     }
     deleteVeggie(veggieId:string){
-        this.http.delete<{message:string}>("http://localhost:3000/api/veggies/"+veggieId)
+        this.http.delete<{message:string}>(BACKEND_URL+"/"+veggieId)
         .subscribe((response)=>{
             this.veggies = this.veggies.filter(veggie=>veggie.id!==veggieId);
             this.veggiesUpdated.next(this.veggies.slice());

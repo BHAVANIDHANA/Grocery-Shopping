@@ -13,7 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor{
         return next.handle(req).pipe(
             catchError((error:HttpErrorResponse)=>{
                 console.log(error);
-                console.log(error.error.message);
+                // console.log(error.error.message);
                 this.dialog.open(PopupMessagesComponent,{height:'200px', 
                                                          width:'460px', 
                                                          data:{ title:"Error Occured !",

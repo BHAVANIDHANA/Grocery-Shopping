@@ -11,7 +11,7 @@ exports.updateRecipe = (req,res,next)=>{
     Recipe.updateOne({_id:req.params.id},updatedRecipe)
     .then(result=>{
         // console.log(result)
-        if(result.nModified>0){
+        if(result.n>0){
             res.status(200).json({
                 message:"recipe updated"
             });

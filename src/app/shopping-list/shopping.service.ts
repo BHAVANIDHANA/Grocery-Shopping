@@ -6,6 +6,9 @@ import { Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
 // import { Ingredient } from '../shared/ingredient.model';
+import { environment } from '../../environments/environment';
+
+const BACKEND_URL=environment.apiUrl+"/shoppingItems";
 
 @Injectable()
 export class ShoppingService{
@@ -18,7 +21,7 @@ export class ShoppingService{
    
     getItems(){
         this.http.get<{message:string, shoppingItems:any}>
-        ("http://localhost:3000/api/shoppingItems")
+        (BACKEND_URL)
         .pipe(map(recipesData=>{
             return recipesData.shoppingItems.map(item=>{
                 return {
@@ -54,15 +57,14 @@ export class ShoppingService{
            price:shoppingData.price,
            quantity:shoppingData.quantity
        };
-       this.http.post<{message:string, addedItem:ShoppingItem}>("http://localhost:3000/api/shoppingItems",transformedShoppingData).subscribe(responseData=>{
+       this.http.post<{message:string, addedItem:ShoppingItem}>
+       (BACKEND_URL,transformedShoppingData).subscribe(responseData=>{
         //    console.log(responseData.message);
          this.shoppingList.push(transformedShoppingData);
          this.shoppingListUpdated.next(this.shoppingList.slice());
         //  this.shoppingItemsCountUpdated.next(this.shoppingList.length);
-        this.getItems();
-           
-       })
-       
+        this.getItems();           
+       })       
     }
     addItemsToShoppingList(shoppingData:ShoppingItem){
         // console.log(shoppingData);
@@ -77,7 +79,8 @@ export class ShoppingService{
    
     onDeletingItem(toBeDeletedItemId:string){        
         // console.log(toBeDeletedItemId);        
-        this.http.delete<{message:string}>("http://localhost:3000/api/shoppingItems/"+toBeDeletedItemId)
+        this.http.delete<{message:string}>
+        (BACKEND_URL+"/"+toBeDeletedItemId)
         .subscribe(
             responseData=>{
                 // console.log(responseData.message);

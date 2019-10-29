@@ -45,7 +45,7 @@ exports.userLogin =(req, res,next)=>{
             }
             const token =jwt.sign(
                                    {email: fetchedUser.email, userId: fetchedUser._id},
-                                   'dhana&raghav_satya&venky_bhargavi&raj_deepti&tiana',
+                                   'dhana_raghav',
                                    { expiresIn:'1h'}
                                  );
              //console.log(token);
