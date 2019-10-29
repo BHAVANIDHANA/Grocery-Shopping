@@ -31,7 +31,7 @@ selectedVeggie:Vegetable;
         this.mode='edit';
         this.selectedVeggieId = paramMap.get('id');
         this.selectedVeggie = this.veggiesService.getVeggiesById(this.selectedVeggieId);
-        console.log(this.selectedVeggie);   
+        // console.log(this.selectedVeggie);   
         this.form.setValue({
           name:this.selectedVeggie.name,
           image:this.selectedVeggie.imagePath,
@@ -65,7 +65,7 @@ selectedVeggie:Vegetable;
    if(this.mode==='edit'){
      this.veggiesService.updateVeggie(this.selectedVeggieId, this.form.value.name, this.form.value.image, this.form.value.price);
     }else{
-      console.log(this.form);
+      // console.log(this.form);
       this.veggiesService.addNewVeggie(this.form.value.name, this.form.value.image, this.form.value.price);
     } 
     this.form.reset();

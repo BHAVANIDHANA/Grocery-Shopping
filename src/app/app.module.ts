@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -64,7 +65,8 @@ import { PopupMessagesComponent } from './popup-messages/popup-messages.componen
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [ {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},
                {provide:HTTP_INTERCEPTORS, useClass:ErrorInterceptor, multi:true},

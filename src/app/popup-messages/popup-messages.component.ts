@@ -8,9 +8,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class PopupMessagesComponent implements OnInit {
 // message="An unknown error";
+  isError=false;
   constructor(@Inject(MAT_DIALOG_DATA) public data: {title:string,message:string}) { }
 
   ngOnInit() {
+    if(this.data.title=='Error Occured !'){
+        this.isError=true;
+    }
   }
 
 }

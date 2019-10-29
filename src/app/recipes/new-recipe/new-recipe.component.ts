@@ -52,7 +52,7 @@ export class NewRecipeComponent implements OnInit {
         this.editMode=true;
         this.selectedRecipeId=param.id;
         this.selectedRecipe=this.recipeService.getRecipesById(this.selectedRecipeId);
-        console.log(this.selectedRecipe.ingredients.length);
+        // console.log(this.selectedRecipe.ingredients.length);
         let length= this.selectedRecipe.ingredients.length;
         
         this.form.patchValue({
@@ -61,7 +61,7 @@ export class NewRecipeComponent implements OnInit {
           //image:this.selectedRecipe.imagePath,
           // ingredients:this.selectedRecipe.ingredients
         });
-       console.log(this.selectedRecipe.ingredients);
+      //  console.log(this.selectedRecipe.ingredients);
        this.recipeImageUrl=this.selectedRecipe.imagePath;
        this._ingredients= this.selectedRecipe.ingredients.map(ingredient=>{
          return {
@@ -128,7 +128,7 @@ export class NewRecipeComponent implements OnInit {
         this.getIngredients().length
       );
     }   
-    console.log(this.getIngredients().length);
+    // console.log(this.getIngredients().length);
     this.recipeService.addNewRecipe(
       this.form.value.name,
       this.form.value.description,

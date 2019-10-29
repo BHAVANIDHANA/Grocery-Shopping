@@ -36,7 +36,7 @@ export class RecipeDetailsComponent implements OnInit, OnDestroy {
     )
   }
   onSelectingIngred(){
-    console.log(this.Z.ingredients);
+    // console.log(this.Z.ingredients);
    this.recipeService.onAddingIngredientsToShoppingList(this.Z.ingredients);
   }
   onDeleteRecipe(){

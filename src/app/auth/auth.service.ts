@@ -99,7 +99,7 @@ export class AuthService implements OnDestroy{
                 const expirationDate = new Date(now.getTime()+expiresInDuration*1000);
                 console.log(expirationDate);
                 this.saveAuthData(this.token,expirationDate,result.email,result.address);
-                console.log(this._email);
+                // console.log(this._email);
                 if(this._email=="Admin@gmail.com"){
                     this.isAdmin=true;
                     this.adminUpdated.next(true);

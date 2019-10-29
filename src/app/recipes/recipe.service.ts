@@ -52,7 +52,7 @@ export class RecipeService{
         
     }
     updateRecipe(recipeId:string, name:String,description:String,imagePath:String, ingredientsArray:FormArray, existingIngredients:Ingredient[], length:number){
-        console.log(length);
+        // console.log(length);
         const recipeData :Recipe={
             id :recipeId,
             description:description,
@@ -60,7 +60,7 @@ export class RecipeService{
             name:name,            
             ingredients: this.getConcatedIngredientControl(length,ingredientsArray,existingIngredients)            
         }
-        console.log(recipeData);
+        // console.log(recipeData);
         this.http.put<{message:string}>("http://localhost:3000/api/recipes/"+recipeId,recipeData)
         .subscribe(responseData=>{
             this.dialog.open(PopupMessagesComponent,{height:'200px', 
@@ -89,7 +89,7 @@ export class RecipeService{
 
     addNewRecipe(name:String,description:String,imagePath:String, ingredientsArray:FormArray, length:number){
       // this._ingredientsArray=ingredientsArray;
-       console.log(length);
+    //    console.log(length);
         const recipeData :Recipe={
             id :null,
             description:description,
@@ -97,7 +97,7 @@ export class RecipeService{
             name:name,            
             ingredients: this.getIngredientControl(length,ingredientsArray)            
         }
-        console.log(recipeData);
+        // console.log(recipeData);
        
         this.http.post<{message:string, recipeId:string}>("http://localhost:3000/api/recipes",recipeData)
         .subscribe(responseData=>{

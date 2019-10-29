@@ -22,7 +22,7 @@ isAdmin=false;
   }
 
   onDeleteVeggie(){
-    console.log(this.veggie.id);
+    // console.log(this.veggie.id);
     this.veggieService.deleteVeggie(this.veggie.id);
     
   }

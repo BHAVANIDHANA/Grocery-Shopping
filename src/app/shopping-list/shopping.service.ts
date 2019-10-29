@@ -55,7 +55,7 @@ export class ShoppingService{
            quantity:shoppingData.quantity
        };
        this.http.post<{message:string, addedItem:ShoppingItem}>("http://localhost:3000/api/shoppingItems",transformedShoppingData).subscribe(responseData=>{
-           console.log(responseData.message);
+        //    console.log(responseData.message);
          this.shoppingList.push(transformedShoppingData);
          this.shoppingListUpdated.next(this.shoppingList.slice());
         //  this.shoppingItemsCountUpdated.next(this.shoppingList.length);
@@ -65,7 +65,7 @@ export class ShoppingService{
        
     }
     addItemsToShoppingList(shoppingData:ShoppingItem){
-        console.log(shoppingData);
+        // console.log(shoppingData);
         this.addShoppingItems(shoppingData);
     }
     
@@ -80,7 +80,7 @@ export class ShoppingService{
         this.http.delete<{message:string}>("http://localhost:3000/api/shoppingItems/"+toBeDeletedItemId)
         .subscribe(
             responseData=>{
-                console.log(responseData.message);
+                // console.log(responseData.message);
                 
                 this.shoppingList=this.shoppingList.filter(item=>item.id!==toBeDeletedItemId);
                 this.shoppingListUpdated.next(this.shoppingList.slice());

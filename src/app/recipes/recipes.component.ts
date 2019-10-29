@@ -22,7 +22,7 @@ export class RecipesComponent implements OnInit,OnDestroy {
     this.userIsAuthenticated=isAuthenticated;
     });
     this.isAdmin=this.authService.getIsAdmin();
-    console.log(this.isAdmin);
+    // console.log(this.isAdmin);
     this.adminSub = this.authService.getAdminListener().subscribe(isAnAdmin=>{
     this.isAdmin=isAnAdmin;
     });

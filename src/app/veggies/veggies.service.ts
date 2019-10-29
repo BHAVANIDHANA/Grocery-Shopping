@@ -64,7 +64,7 @@ export class VeggiesService{
 
     updateVeggie(id:string, name:string, imagePath:string, price:number){
         const veggieData:Vegetable = {id:id, name:name, imagePath:imagePath, price:price};
-        console.log(veggieData)
+        // console.log(veggieData)
         this.http.put<{message:string}>("http://localhost:3000/api/veggies/"+id,veggieData)
         .subscribe(responseData=>{
             this.dialog.open(PopupMessagesComponent,{height:'200px', 
