@@ -115,6 +115,7 @@ export class NewRecipeComponent implements OnInit {
   getIngredients(){
     return this.form.get('ingredients') as FormArray;
   }
+  // get IngredientsData { return this.form.get('ingredients') as FormArray}
 
   onSaveRecipe(){ 
     if(this.editMode==true){

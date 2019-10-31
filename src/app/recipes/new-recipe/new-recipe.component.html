@@ -27,13 +27,9 @@
            <input type="file" #recipeFileInput 
                (change)="onRecipeImagePicked($event)">
       </div>    
-      <br> <br>
-      <h3>
-          <b>Ingredients: &nbsp;
-          <a style="cursor: pointer;" (click)="onAddIngredient($event,i)">➕</a>
-          </b>
-      </h3>
-       <div formArrayName="ingredients" *ngFor="let ingredient of form.get('ingredients').controls; let i=index;">
+      <br> <br><br><br>
+      
+       <div formArrayName="ingredients" *ngFor="let ingredient of getIngredients().controls; let i=index;">
            <div [formGroupName]="i">
                 <label>Name of the Ingredient:</label>
                 <input type="text" 
@@ -70,10 +66,13 @@
                      <input type="file" #ingredientFileInput 
                          (change)="onIngredientImagePicked($event,i)">            
                                          
-                </div> 
-                <div>
-            </div>
-           </div>      
+                </div>                
+           </div>    
+           <h3>
+            <b>Ingredients: &nbsp;
+            <a style="cursor: pointer;" (click)="onAddIngredient($event,i)">➕</a>
+            </b>
+        </h3>  
        </div>      
   </div>
   

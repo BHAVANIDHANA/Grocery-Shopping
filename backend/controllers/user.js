@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const ShoppingItem = require("../models/shoppingItem");
 
@@ -19,7 +19,7 @@ exports.createUser=(req,res,next)=>{
         });
        }).catch(err=>{
            res.status(500).json({
-              message:"In-valid Authentication credentials!"
+              message:"Email already registered !"
            });
        });       
     });
