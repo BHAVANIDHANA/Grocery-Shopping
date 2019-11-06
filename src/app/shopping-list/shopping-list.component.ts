@@ -13,7 +13,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
  
 shoppedList:ShoppingItem[];
 shoppingSub:Subscription;
-total:number=0;
+total=0;
   constructor(private shoppingService:ShoppingService, private route:Router) { }
 
   ngOnInit() {
@@ -43,9 +43,6 @@ total:number=0;
 
   ngOnDestroy(): void {
     this.shoppingSub.unsubscribe();
-  }
-   onBuying(){
-     
-   }
+  }   
 
 }
