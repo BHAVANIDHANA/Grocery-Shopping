@@ -20,3 +20,10 @@
  input{
      border-style: ridge;
  }
+ .signUp{
+     margin-left: 80px;
+     margin-top:10px;
+     font-weight: bold;
+     /* color:green; */
+     
+ }

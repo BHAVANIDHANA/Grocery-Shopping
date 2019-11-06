@@ -44,6 +44,8 @@ total:number=0;
   ngOnDestroy(): void {
     this.shoppingSub.unsubscribe();
   }
-  
+   onBuying(){
+     
+   }
 
 }

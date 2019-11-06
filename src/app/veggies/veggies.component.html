@@ -6,7 +6,8 @@
 <div class="container">
   <div class="row">       
       <div class="flex-container">
-        <app-veggies-list></app-veggies-list>   
+        <app-veggies-list *ngIf="!userIsAuthenticated" [routerLink]="['/login']" routerLinkActive="active"></app-veggies-list>   
+        <app-veggies-list *ngIf="userIsAuthenticated"></app-veggies-list>   
       </div>                           
   </div>  
 </div>

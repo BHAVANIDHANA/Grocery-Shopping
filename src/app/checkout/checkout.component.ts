@@ -3,6 +3,7 @@ import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { PopupMessagesComponent } from '../popup-messages/popup-messages.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -13,17 +14,24 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   
 address:string;
 addressSub:Subscription;
-  constructor(private authService:AuthService,private dialog:MatDialog) { }
+total:number=0;
+alertMessage='';
+  constructor(private authService:AuthService,private dialog:MatDialog, private activatedRoute:ActivatedRoute) { }
 
   ngOnInit() {
     this.address=this.authService.getUserAddress();
     this.addressSub=this.authService.getUserAddressListener().subscribe(userAddress=>{
       this.address=userAddress;
+    });
+    this.activatedRoute.params.subscribe(params=>{
+      this.total=params['total'];
     })
   }
 onOrder(){
   //alert("Order confirmed!");
-  this.dialog.open(PopupMessagesComponent, {width:"450px",height:"180px",data:{ title:"Order status",message:"Order Confirmed !"}});
+  this.alertMessage="Order Confirmed! Amount: "+this.total+"$";
+  this.dialog.open(PopupMessagesComponent,
+     {width:"450px",height:"180px",data:{ title:"Order status",message:this.alertMessage}});
 }
 ngOnDestroy(): void {
   this.addressSub.unsubscribe();

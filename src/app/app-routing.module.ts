@@ -12,9 +12,11 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/signUp/signUp.component';
 import { AuthGuard } from './auth/auth-guard';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { CarouselComponent } from './carousel/carousel.component';
 
 const appRoutes:Routes=[
-{path:'',redirectTo:'/veggies',pathMatch:'full'},
+// {path:'',redirectTo:'/veggies',pathMatch:'full'},
+{path:'',component:CarouselComponent},
 {path:'veggies',component:VeggiesComponent},
 {path:'veggies/:id',component:VeggiesDetailsComponent, canActivate:[AuthGuard]},
 {path:'edit/:id',component:NewVeggieComponent, canActivate:[AuthGuard]},
@@ -26,7 +28,7 @@ const appRoutes:Routes=[
 ]},
 {path:'editRecipe/:id',component:NewRecipeComponent, canActivate:[AuthGuard]},
 {path:'shopping-list',component:ShoppingListComponent, canActivate:[AuthGuard]},
-{path:'checkout', component:CheckoutComponent},
+{path:'checkout/:total', component:CheckoutComponent},
 {path:'login',component:LoginComponent},
 {path:'signUp',component:SignUpComponent},
 
