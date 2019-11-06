@@ -19,8 +19,8 @@
     </ul>
     <div class="col-xs-5">
       <div *ngIf="total!==0" class="panel panel-default">
-        <div class="panel-heading" style="background-color: rgb(229, 230, 225);" >Total : {{total}} $</div>
-        <button class="btn btn-danger"  routerLinkActive="active" [routerLink]="['/checkout',total]">Buy All</button>
+        <div class="panel-heading" style="background-color: rgb(229, 230, 225);" >Total : {{displayTotal}} $</div>
+        <button class="btn btn-danger"  routerLinkActive="active" [routerLink]="['/checkout',displayTotal]">Buy All</button>
       </div>
     </div>
   </div>

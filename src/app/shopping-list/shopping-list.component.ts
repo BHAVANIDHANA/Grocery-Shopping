@@ -14,6 +14,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 shoppedList:ShoppingItem[];
 shoppingSub:Subscription;
 total=0;
+displayTotal;
   constructor(private shoppingService:ShoppingService, private route:Router) { }
 
   ngOnInit() {
@@ -27,7 +28,8 @@ total=0;
        if(this.shoppedList.length>0){
           for(let i=0;i<this.shoppedList.length;i++){
             this.total=this.total+(this.shoppedList[i].price*this.shoppedList[i].quantity);
-          }       
+          }  
+          this.displayTotal=this.total.toFixed(2);     
         } 
       }
     );   
